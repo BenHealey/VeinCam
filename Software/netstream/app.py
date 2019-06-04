@@ -10,8 +10,8 @@ from flask import Flask, render_template, request, Response, json
 if os.name == 'nt':
     DEBUG = True
     baseurl='http://localhost:5000'
-    from emulated_camera import Camera
-    import emulated_pigpio as io
+    from windev.emulated_camera import Camera
+    import windev.emulated_pigpio as io
     print('Dev mode')
 else:
     DEBUG = False
