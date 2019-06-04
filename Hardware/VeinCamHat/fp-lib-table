@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name VeinCam_Footprints)(type KiCad)(uri "C:/Users/Josh Johnson/Dropbox/ENGN4221/veincam2019/Hardware/Library/VeinCam_Footprints")(options "")(descr ""))
+)

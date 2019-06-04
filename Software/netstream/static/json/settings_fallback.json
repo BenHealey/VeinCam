@@ -1,0 +1,11 @@
+{
+    "app_name": "FallbackTitle",
+    "cam_brightness": "50",
+    "cam_contrast": "0",
+    "cam_frame_rate": "30",
+    "cam_shutspeed": "2",
+    "cam_state": false,
+    "light_level": 1,
+    "light_wavelength": "Both",
+    "roi":"Large"
+}

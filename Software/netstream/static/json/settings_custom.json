@@ -1,0 +1,13 @@
+{
+    "app_name": "VeinCam",
+    "cam_brightness": "30",
+    "cam_contrast": "50",
+    "cam_frame_rate": "30",
+    "cam_shutter_speed": "100",
+    "cam_state": false,
+    "color": "Off",
+    "light_level": 3,
+    "light_wavelength": "850nm",
+    "roi": "Large",
+    "state": "MJPEG"
+}

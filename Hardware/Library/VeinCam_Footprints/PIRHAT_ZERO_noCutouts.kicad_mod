@@ -1,0 +1,18 @@
+(module PIRHAT_ZERO_noCutouts (layer F.Cu) (tedit 5CAAC9BA)
+  (descr "Raspberry Pi Zero W IR Hat, full outline with position of big connectors &amp; drill holes")
+  (fp_text reference TP1 (at 0 0) (layer F.SilkS) hide
+    (effects (font (size 1.27 1.27) (thickness 0.15)))
+  )
+  (fp_text value RPiZero_BoardOutline (at 0 0) (layer F.SilkS) hide
+    (effects (font (size 1.27 1.27) (thickness 0.15)))
+  )
+  (fp_arc (start 3 -3) (end 0 -3) (angle -90) (layer Edge.Cuts) (width 0.254))
+  (fp_line (start 3 0) (end 6.1 0) (layer Edge.Cuts) (width 0.254))
+  (fp_line (start 6.1 0) (end 62 0) (layer Edge.Cuts) (width 0.254))
+  (fp_arc (start 62 -3) (end 62 0) (angle -90) (layer Edge.Cuts) (width 0.254))
+  (fp_line (start 65 -3) (end 65 -27) (layer Edge.Cuts) (width 0.254))
+  (fp_arc (start 62 -27) (end 65 -27) (angle -90) (layer Edge.Cuts) (width 0.254))
+  (fp_line (start 62 -30) (end 3 -30) (layer Edge.Cuts) (width 0.254))
+  (fp_arc (start 3 -27) (end 3 -30) (angle -90) (layer Edge.Cuts) (width 0.254))
+  (fp_line (start 0 -27) (end 0 -3) (layer Edge.Cuts) (width 0.254))
+)

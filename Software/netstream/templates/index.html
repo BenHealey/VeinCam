@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icons/icon_192x192.png') }}" sizes="192x192">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/icons/icon_152x152.png') }}">
+
+    <title>{{ config_data.app_name }}</title>
+
+    <!-- Bootstrap core and plugin *CSS* -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/bootstrap-switch-modified.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='css/fontawesome.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+  </head>
+
+  <body class="text-center">
+    <div class="cover-container d-flex w-100 h-100 mx-auto flex-column">
+
+      <header class="masthead mb-auto">
+        <div class="navbar navbar-dark">
+          <div class="container d-flex justify-content-between">
+          <!-- https://www.w3schools.com/bootstrap/bootstrap_grid_small.asp -->
+            <div class="col-md-3 col-6"><span id="masthead-brand" class="masthead-brand">{{ config_data.app_name }}</span></div>
+            <!-- Camera on/off rounded SWITCH -->
+            <!-- http://www.jque.re/plugins/version3/bootstrap.switch/  https://github.com/Bttstrp/bootstrap-switch -->
+            <div class="col-md-3 col-6">
+              <input type="checkbox" name="attrCamState" id="attrCamState">
+            </div>
+            
+            <!-- Light levels https://codepen.io/johno/pen/LkaiI https://css-tricks.com/the-shapes-of-css/ -->
+            <div class="col-md-3 col-6">
+            <a href="#" 
+              onclick="alterConfig($('#attrLightLevel'),'light_level',parseInt($('#attrLightLevel').text())-1,updateTextValue);"
+              ><i class="fa fa-minus-square fa-lg"></i></a> 
+              <i class="fa fa-lightbulb text-muted"></i>
+              <strong id="attrLightLevel">{{ config_data.light_level|safe }}</strong><sup>/3</sup>
+            <a href="#" 
+              onclick="alterConfig($('#attrLightLevel'),'light_level',parseInt($('#attrLightLevel').text())+1,updateTextValue);"
+              ><i class="fa fa-plus-square fa-lg"></i></a>
+            </div>
+            <div class="col-md-3 col-6">
+            <!-- Config/Settings toggle -->                      
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarConfig" aria-controls="navbarConfig" aria-expanded="false" aria-label="Toggle navigation">
+              <i class="fa fa-cog fa-lg"></i>
+            </button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="collapse" id="navbarConfig">
+            <div class="container">
+              <div class="row">
+                <div class="col-sm-6 col-md-6 py-4">
+                  <h4 class="text-white">App and Light Settings</h4>
+                  <ul class="list-unstyled">
+                    <li>
+                        <div>
+                          App name: 
+                          <input type="input" class="form-control form-control-sm d-inline col-3" 
+                            id="attrAppName" placeholder="{{ config_data.app_name }}">
+                          <button type="button" class="btn btn-sm btn-primary mb-1 d-inline" id="attrAppNameBtn"
+                            onclick="alterConfig($('#attrAppName'),'app_name',$('#attrAppName').val(),updateTitle);">Update</button>
+                        </div>
+                    </li>
+                  </ul>
+
+                  <ul class="list-unstyled">
+                      <li>Wavelength:
+                        <div  id="BG-Wavelength" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+                          <label class="btn {% if config_data.light_wavelength == '850nm' %}btn-primary{% else %}btn-light{% endif %}" for="attrWavelen-850nm">
+                            <input type="radio" name="attrWavelen" id="attrWavelen-850nm" autocomplete="off" {% if config_data.light_wavelength == '850nm' %}checked{% endif %}>850nm
+                          </label>
+                          <label class="btn {% if config_data.light_wavelength == 'Both' %}btn-primary{% else %}btn-light{% endif %}" for="attrWavelen-Both">
+                            <input type="radio" name="attrWavelen" id="attrWavelen-Both" autocomplete="off" {% if config_data.light_wavelength == 'Both' %}checked{% endif %}>Both
+                          </label>
+                          <label class="btn {% if config_data.light_wavelength == '940nm' %}btn-primary{% else %}btn-light{% endif %}" for="attrWavelen-940nm">
+                            <input type="radio" name="attrWavelen" id="attrWavelen-940nm" autocomplete="off" {% if config_data.light_wavelength == '940nm' %}checked{% endif %}>940nm
+                          </label>
+                        </div>
+                      </li>
+                  </ul>
+
+                  <ul class="list-unstyled">
+                    <li>Enhance region:
+                      <div id="BG-ROI" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+                        <label class="btn {% if config_data.roi == 'Off' %}btn-primary{% else %}btn-light{% endif %}" for="attrROI-Off">
+                          <input type="radio" name="attrROI" id="attrROI-Off" autocomplete="off" {% if config_data.roi == 'Off' %}checked{% endif %}><i class="fa fa-ban fa-lg"></i>
+                        </label>
+                        <label class="btn {% if config_data.roi == 'Small' %}btn-primary{% else %}btn-light{% endif %}" for="attrROI-Small">
+                          <input type="radio" name="attrROI" id="attrROI-Small" autocomplete="off" {% if config_data.roi == 'Small' %}checked{% endif %}>&nbsp;<i class="fa fa-expand fa-sm"></i>&nbsp;
+                        </label>
+                        <label class="btn {% if config_data.roi == 'Large' %}btn-primary{% else %}btn-light{% endif %}" for="attrROI-Large">
+                          <input type="radio" name="attrROI" id="attrROI-Large" autocomplete="off" {% if config_data.roi == 'Large' %}checked{% endif %}><i class="fa fa-expand fa-lg"></i>
+                        </label>
+                      </div>
+                    </li>
+                </ul>
+
+                  <ul class="list-unstyled">
+                    <li class="text-muted">App version: 0.1</li>
+                  </ul>
+                </div>
+
+                <div class="col-sm-6 col-md-6 py-4">
+                  <h4 class="text-white">Camera Settings</h4>
+                  <ul class="list-unstyled">
+                    <li class="mb-3"><span class="settings-table-left text-right">Contrast:</span>
+                      <span class="settings-table-right text-right">
+                          <a href="#" 
+                            onclick="alterConfig($('#attrContrast'),'cam_contrast',parseInt($('#attrContrast').text())-10,updateTextValue);"
+                            ><i class="fa fa-minus-square fa-lg"></i></a>
+                            <strong id="attrContrast">0</strong><sup> / ±100</sup>
+                          <a href="#" 
+                            onclick="alterConfig($('#attrContrast'),'cam_contrast',parseInt($('#attrContrast').text())+10,updateTextValue);"
+                            ><i class="fa fa-plus-square fa-lg"></i></a>
+                      </span>
+                    </li>
+
+                    <li class="mb-3"><span class="settings-table-left text-right">Brightness:</span>
+                      <span class="settings-table-right text-right">
+                          <a href="#" 
+                            onclick="alterConfig($('#attrBrightness'),'cam_brightness',parseInt($('#attrBrightness').text())-10,updateTextValue);"
+                            ><i class="fa fa-minus-square fa-lg"></i></a>
+                            <strong id="attrBrightness">50</strong><sup> / 100</sup>
+                          <a href="#" 
+                            onclick="alterConfig($('#attrBrightness'),'cam_brightness',parseInt($('#attrBrightness').text())+10,updateTextValue);"
+                            ><i class="fa fa-plus-square fa-lg"></i></a>
+                      </span>
+                    </li>
+
+                    <li class="mb-3"><span class="settings-table-left text-right">Shutterspeed:</span>
+                      <span class="settings-table-right text-right">
+                          <a href="#" 
+                            onclick="alterConfig($('#attrShutterSpeed'),'cam_shutspeed',parseInt($('#attrShutterSpeed').text())-1,updateTextValue);"
+                            ><i class="fa fa-minus-square fa-lg"></i></a>
+                            <strong id="attrShutterSpeed">2</strong><sup> /100ths</sup>
+                          <a href="#" 
+                            onclick="alterConfig($('#attrShutterSpeed'),'cam_shutspeed',parseInt($('#attrShutterSpeed').text())+1,updateTextValue);"
+                            ><i class="fa fa-plus-square fa-lg"></i></a>
+                      </span>
+                    </li>
+
+                </ul>
+                <ul class="list-unstyled">
+                      <li>Camera Capture Type:
+                        <div  id="BG-State" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+                          <label class="btn {% if config_data.state == 'MJPEG' %}btn-primary{% else %}btn-light{% endif %}" for="attrStatus-MJPEG">
+                            <input type="radio" name="status-MJPEG" id="attrStatus-MJPEG" autocomplete="off" {% if config_data.state == 'MJPEG' %}checked{% endif %}>MJPEG
+                          </label>
+                          <label class="btn {% if config_data.state == 'YUV' %}btn-primary{% else %}btn-light{% endif %}" for="attrStatus-YUV">
+                            <input type="radio" name="status-YUV" id="attrStatus-YUV" autocomplete="off" {% if config_data.state == 'YUV' %}checked{% endif %}>YUV
+                          </label>
+                        </div>
+                      </li>
+                  </ul>
+                  <ul class="list-unstyled">
+                      <li>MJPEG Colour Capture:
+                        <div  id="BG-Color" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+                          <label class="btn {% if config_data.color == 'On' %}btn-primary{% else %}btn-light{% endif %}" for="attrColor-On">
+                            <input type="radio" name="color-On" id="attrColor-On" autocomplete="off" {% if config_data.color == 'On' %}checked{% endif %}>Colour
+                          </label>
+                          <label class="btn {% if config_data.color == 'Off' %}btn-primary{% else %}btn-light{% endif %}" for="attrColor-Off">
+                            <input type="radio" name="color-Off" id="attrColor-Off" autocomplete="off" {% if config_data.color == 'Off' %}checked{% endif %}>Black and White
+                          </label>
+                        </div>
+                      </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+        </div>
+      </header>
+
+      <main role="main" class="image">
+        <div id="camState">
+            <p>&nbsp;</p>
+            <!-- Camera off msg or the video stream will be dynamically placed below -->
+            <p class="lead"></p>
+        </div>
+      </main>
+
+      <footer class="mastfoot mt-auto">
+        <div class="inner">
+          <p><a href="#" class="" onclick="shutdownPi(); return false;"><i class="fa fa-power-off fa-sm"></i> Shutdown</a> |
+            <a href="#" class="" onclick="shutdownServer(); return false;"><i class="fa fa-stop-circle fa-sm"></i> Stop</a> |
+            CPU Temp: <span id="statCPUTemp">{{ stats_data.cpu_temp|safe }}</span>&#8451; | 
+            CPU use: <span id="statCPUUsage">{{ stats_data.cpu_usage|safe }}</span>% | 
+            RAM use: <span id="statRAMUsage">{{ stats_data.ram_usage|safe }}</span>% | 
+            <a href="#" class="" onclick="refreshStats(); return false;"><i class="fa fa-sync-alt fa-sm"></i> Refresh</a></p>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Bootstrap core *JavaScript*
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}" ></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-switch.min.js') }}"></script>
+
+    <!-- Custom AJAX *JavaScript* - on page as this is a tiny app
+    ================================================== -->    
+    <script>
+      // Update config attribute functions that run after a successful
+      // AJAX call to server.
+      function updateTextValue(object, attr, newVal){
+        object.text(newVal);
+      }
+      function updateTitle(object, attr, newVal){
+        object.val(newVal);
+        $('title').text(newVal);
+        $('#masthead-brand').text(newVal);
+      }
+      function updateBG(object, attr, newVal){
+        //$(".btn-group > label").removeClass("btn-primary").addClass("btn-light");
+        object.siblings("label").removeClass("btn-primary").addClass("btn-light");
+        object.removeClass("btn-light").addClass("btn-primary");
+      }
+      function updateCamState(object, attr, newVal){
+        return; // Do nothing. Handled elsewhere.
+      }
+
+      // AJAX function for actioning user-initiated change
+      // to configuration (and storing value statically server-side). 
+      function alterConfig(object, attr, newVal, updateFunc){
+      //console.log({attribute : attr, value : newVal});  
+      $.ajax({
+          //the url to send the data to, data to send (JSON), and type
+          url: "/alter-config",
+          data: {attribute : attr, value : newVal},
+          type: "POST",
+          //datatype expected to get in reply form server
+          dataType: "json",
+          //on success, update the values at this end
+          success: function(response, status, jqXHR){
+              console.log(response);
+              // Passed in function, accounts for updating different types of things
+              updateFunc(object,attr,newVal);
+          },
+          //on error
+          error: function(error){
+              console.log(error);
+              // TODO Rasie a messagebox
+          }
+        });
+      } 
+
+      function refreshStats(){
+      console.log('Refreshing stats');
+      $.ajax({
+          //the url to send the data to, data to send (JSON), and type
+          url: "/refresh-stats",
+          data: {},
+          type: "POST",
+          //datatype expected to get in reply form server
+          dataType: "json",
+          //on success, update the values at this end
+          success: function(response, status, jqXHR){
+              console.log(response);
+              updateTextValue($('#statCPUTemp'), '', response.cpu_temp);
+              updateTextValue($('#statCPUUsage'), '', response.cpu_usage);
+              updateTextValue($('#statRAMUsage'), '', response.ram_usage);
+          },
+          //on error
+          error: function(error){
+              console.log(error);
+              // TODO Rasie a messagebox
+          }
+      });
+      } 
+
+      function shutdownServer(){
+      console.log('Attempting shutdown of server');
+      $.ajax({
+          //the url to send the data to, data to send (JSON), and type
+          url: "/shutserver",
+          data: {},
+          type: "POST",
+          //datatype expected to get in reply form server
+          dataType: "json",
+          //on success, update the values at this end
+          success: function(response, status, jqXHR){
+              console.log(response);
+          },
+          //on error
+          error: function(error){
+              console.log(error);
+              // TODO Rasie a messagebox
+          }
+      });
+      } 
+
+      function shutdownPi(){
+      console.log('Attempting shutdown of Pi');
+      $.ajax({
+          //the url to send the data to, data to send (JSON), and type
+          url: "/shutpi",
+          data: {},
+          type: "POST",
+          //datatype expected to get in reply form server
+          dataType: "json",
+          //on success, update the values at this end
+          success: function(response, status, jqXHR){
+              console.log(response);
+          },
+          //on error
+          error: function(error){
+              console.log(error);
+              // TODO Rasie a messagebox
+          }
+      });
+      } 
+
+      // Bulk-assign click event for the wavelength button group. UpdateBG kept as
+      // a separate function (above) as it should only run if the AJAX is successful.
+      $("#BG-Wavelength > .btn").click(function(){
+        console.log( $(this).children("input")[0]["name"], $(this).children("input").attr('id').split("-").pop());
+        alterConfig($(this), 
+          'light_wavelength', 
+          $(this).children("input").attr('id').split("-").pop(), 
+          updateBG);
+      });
+      $("#BG-ROI > .btn").click(function(){
+        console.log( $(this).children("input")[0]["name"], $(this).children("input").attr('id').split("-").pop());
+        alterConfig($(this),
+          'roi',
+          $(this).children("input").attr('id').split("-").pop(),
+          updateBG);
+      });
+      $("#BG-Color > .btn").click(function(){
+        console.log( $(this).children("input")[0]["name"], $(this).children("input").attr('id').split("-").pop());
+        alterConfig($(this),
+          'color',
+          $(this).children("input").attr('id').split("-").pop(),
+          updateBG);
+      });
+      $("#BG-State > .btn").click(function(){
+        console.log( $(this).children("input")[0]["name"], $(this).children("input").attr('id').split("-").pop());
+        alterConfig($(this),
+          'state',
+          $(this).children("input").attr('id').split("-").pop(),
+          updateBG);
+      });
+
+      // TODO TODO Camera always initially off.  Function to handle UI changes and
+      // initiate change of state server-side 
+      function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      async function toggleCameraState(turnOn){
+        console.log("camera toggled to:", turnOn);
+
+        // No AJAX call explicitly required here.
+        // is done in 'alterConfig' instead.
+        if (turnOn) {
+          alterConfig($("#attrCamState"), 'camera_state', turnOn, updateCamState);
+          $("#camState > p.lead").empty();
+          $incvar=$incvar+1;
+          // console.log($incvar);
+          $("#camState > p.lead").html('<img src="\{{ url_for('video_feed') }}/'+$incvar+'/\" height="90%" width="90%" >');
+          $(".mastfoot").css("bottom", "0px");
+        } else { 
+          alterConfig($("#attrCamState"), 'camera_state', turnOn, updateCamState);
+          $("#camState > p.lead").empty();
+          $("#camState > p.lead").html($cam_offtext);
+          $(".mastfoot").css("bottom", "0px");
+        }
+      }
+
+      $(document).ready(function(){
+        // Some initial values
+        $incvar=0;
+
+        $cam_offtext="The camera is OFF.</br>Tap the switch above to turn it on.</br>";
+        $("#camState > p.lead").html($cam_offtext);
+
+        // Set up key press on app name change input field to trigger change . 
+        $('#attrAppName').keyup(function (e) {
+        var key = e.which;
+        if(key == 13)  // the enter key code
+          {
+            $('#attrAppNameBtn').click();
+            return false;  
+          }
+        });  
+
+        // Modify the camera state checkbox to something pretty. 
+        $("#attrCamState").bootstrapSwitch("labelText","<i class='fa fa-camera fa-lg'></i>");
+
+        // TODO Capture state change to and initiate ui spinners and fire server event.
+        // https://stackoverflow.com/questions/18830219/bootstrap-switch-checked-event
+        $('#attrCamState').on('switchChange.bootstrapSwitch', function (e, state) {
+          //console.log(e, state);
+          toggleCameraState(state);
+        });
+
+      });
+    </script>
+
+  </body>
+</html>

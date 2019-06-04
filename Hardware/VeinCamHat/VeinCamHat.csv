@@ -1,0 +1,44 @@
+Source:,C:\Users\Josh Johnson\Dropbox\ENGN4221\veincam2019\Hardware\VeinCamHat\VeinCamHat.sch,,,,,
+Date:,26/05/2019 19:16,,,,,
+Tool:,Eeschema (5.1.2)-1,,,,,
+Generator:,C:\Program Files\KiCad\bin\scripting\plugins/bom_csv_grouped_by_value.py,,,,,
+Component Count:,19,,,,,
+,,,,,,
+Individual Components:,,,,,,
+,,,,,,
+Item,Qty,Reference(s),Value,LibPart,Footprint,Datasheet
+,,D1,GREEN LED,Device:LED,LED_SMD:LED_0805_2012Metric,~
+,,D2,RED LED,Device:LED,LED_SMD:LED_0805_2012Metric,~
+,,D3,SFH7252,VeinCam_Symbols:SFH7252,VeinCam_Footprints:SFH7252,~
+,,D4,SFH7252,VeinCam_Symbols:SFH7252,VeinCam_Footprints:SFH7252,~
+,,D5,SFH7252,VeinCam_Symbols:SFH7252,VeinCam_Footprints:SFH7252,~
+,,D6,SFH7252,VeinCam_Symbols:SFH7252,VeinCam_Footprints:SFH7252,~
+,,D7,SFH7252,VeinCam_Symbols:SFH7252,VeinCam_Footprints:SFH7252,~
+,,D8,SFH7252,VeinCam_Symbols:SFH7252,VeinCam_Footprints:SFH7252,~
+,,H1,MountingHole,Mechanical:MountingHole,MountingHole:MountingHole_2.7mm_M2.5,~
+,,H2,MountingHole,Mechanical:MountingHole,MountingHole:MountingHole_2.7mm_M2.5,~
+,,H3,MountingHole,Mechanical:MountingHole,MountingHole:MountingHole_2.7mm_M2.5,~
+,,H4,MountingHole,Mechanical:MountingHole,MountingHole:MountingHole_2.7mm_M2.5,~
+,,J1,Raspberry_Pi_2_3,Connector:Raspberry_Pi_2_3,Connector_PinSocket_2.54mm:PinSocket_2x20_P2.54mm_Vertical,https://www.raspberrypi.org/documentation/hardware/raspberrypi/schematics/rpi_SCH_3bplus_1p0_reduced.pdf
+,,Q1,NTJD4001N,VeinCam_Symbols:NTJD4001N,Package_TO_SOT_SMD:SOT-363_SC-70-6,
+,,R1,1K,Device:R,Resistor_SMD:R_0603_1608Metric,~
+,,R2,1K5,Device:R,Resistor_SMD:R_0603_1608Metric,~
+,,R7,10K,Device:R,Resistor_SMD:R_0603_1608Metric,~
+,,R8,10K,Device:R,Resistor_SMD:R_0603_1608Metric,~
+,,RN1,R_Pack04,Device:R_Pack04,Resistor_SMD:R_Array_Concave_4x0603,~
+,,,,,,
+,,,,,,
+,,,,,,
+Collated Components:,,,,,,
+,,,,,,
+Item,Qty,Reference(s),Value,LibPart,Footprint,Datasheet
+1,1,D1,GREEN LED,Device:LED,LED_SMD:LED_0805_2012Metric,~
+2,1,D2,RED LED,Device:LED,LED_SMD:LED_0805_2012Metric,~
+3,6,"D3, D4, D5, D6, D7, D8",SFH7252,VeinCam_Symbols:SFH7252,VeinCam_Footprints:SFH7252,~
+4,4,"H1, H2, H3, H4",MountingHole,Mechanical:MountingHole,MountingHole:MountingHole_2.7mm_M2.5,~
+5,1,J1,Raspberry_Pi_2_3,Connector:Raspberry_Pi_2_3,Connector_PinSocket_2.54mm:PinSocket_2x20_P2.54mm_Vertical,https://www.raspberrypi.org/documentation/hardware/raspberrypi/schematics/rpi_SCH_3bplus_1p0_reduced.pdf
+6,1,Q1,NTJD4001N,VeinCam_Symbols:NTJD4001N,Package_TO_SOT_SMD:SOT-363_SC-70-6,
+7,1,R1,1K,Device:R,Resistor_SMD:R_0603_1608Metric,~
+8,1,R2,1K5,Device:R,Resistor_SMD:R_0603_1608Metric,~
+9,2,"R7, R8",10K,Device:R,Resistor_SMD:R_0603_1608Metric,~
+10,1,RN1,R_Pack04,Device:R_Pack04,Resistor_SMD:R_Array_Concave_4x0603,~
