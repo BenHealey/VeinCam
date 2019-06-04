@@ -1,0 +1,18 @@
+{
+    "app_name": "MyCam",
+    "cam_brightness": "50",
+    "cam_contrast": "0",
+    "cam_frame_rate": "30",
+    "cam_shutspeed": "1",
+    "cam_shutter_speed": "100",
+    "cam_state": "false",
+    "camera_state": "false",
+    "color": "Off",
+    "enhancement_method": "HE",
+    "enhancement_roi": "Small",
+    "img_format": "MJPEG",
+    "light_level": "1",
+    "light_wavelength": "850nm",
+    "wifi_pwd": "12345",
+    "wifi_ssid": "IndieVein"
+}

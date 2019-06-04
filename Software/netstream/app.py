@@ -1,17 +1,38 @@
 import os
-
+import re
 import psutil
 from flask import Flask, render_template, request, Response, json
 
-from camera_piopencv import Camera
-import pigpio as io
+#from camera_piopencv import Camera
+#import pigpio as io
+
+#TODO - delete from production
+if os.name == 'nt':
+    DEBUG = True
+    baseurl='http://localhost:5000'
+    from emulated_camera import Camera
+    import emulated_pigpio as io
+    print('Dev mode')
+else:
+    DEBUG = False
+    baseurl='http://10.0.0.5:5000'
+    from camera_piopencv import Camera # RPi camera module (requires picamera pckg)
+    import pigpio as io
+    print('Prod mode')
 
 app = Flask(__name__)
 
 
 '''Settings and Statistics Dictionary Functions'''
+# Creates map to wifi setup file
+wifi_file = os.path.join('etc','hostapd','hostapd.conf')
+
+if DEBUG: #TODO delete from production
+    wifi_file = os.path.join(app.root_path, 'hostapd.conf')
+
+
 # Creates Setting Cache
-settings_file = os.path.join(app.static_folder, 'json/settings_custom.json')
+settings_file = os.path.join(app.static_folder, 'json', 'settings.json')
 settings_cache = json.load(open(settings_file))
 
 # Creates System Statistics Cache
@@ -43,9 +64,26 @@ def update_system_stats():
     return
 
 
+def update_wifi_settings(attr,val):
+    print("updating wifi")
+    with open(wifi_file,'r') as f:
+            in_file = f.read()
+            f.close()
+
+    if attr == 'wifi_pwd':
+        out_file =  re.sub(r'wpa_passphrase=.*','wpa_passphrase='+val, in_file)
+
+    if attr == 'wifi_ssid':
+        out_file =  re.sub(r'ssid=.*','ssid='+val,in_file)
+
+    with open(wifi_file,'w') as f:
+            f.write(out_file)
+            f.close()
+
 '''Global Render Template'''
 @app.route('/')
 def index():
+    pipin.write(4, 0) # Turn Ready LEDs OFF - user knows this already.
     update_system_stats()
     return render_template('index.html',
                            config_data=settings_cache,
@@ -62,43 +100,45 @@ LEDPinMap = {"850nm": {18},
 pipin = io.pi()
 
 def all_led_off():
-    [pipin.write(pin, 0) for pin in LEDPinMap['Both']]
+    [pipin.write(pin,0) for pin in LEDPinMap['Both']]
 
 
 '''App Altering Functions'''
 def alter_light_level(val):
-    if val in (1, 2, 3):
-        duty_cycle = 333333*val  # Max = 1000000
-        activeLEDs5V = LEDPinMap[settings_cache['light_wavelength']].intersection(LEDPinMap["Rail5V"])
-        [pipin.hardware_PWM(pin, 750, duty_cycle) for pin in activeLEDs5V]
+    intval=int(val)
+    if intval in (1, 2, 3):
+        duty_cycle = 333333*intval  # Max = 1000000
+        activeLEDs = LEDPinMap[settings_cache['light_wavelength']].intersection(LEDPinMap["Rail5V"])
+        [pipin.hardware_PWM(pin, 750, duty_cycle) for pin in activeLEDs]
 
-        if val != settings_cache['light_level']:
-            update_settings_cache('light_level', val)
-    elif val == 0:
-        all_led_off()
         if val != settings_cache['light_level']:
             update_settings_cache('light_level', val)
     else:
-        pass
+        all_led_off()
 
 
-def alter_cam_setting(attr, val):
+def alter_cam_setting(attr,val):
+
     if val in ["850nm", "Both", "940nm"]:
         all_led_off()
-        update_settings_cache(attr, val)
         alter_light_level(settings_cache['light_level'])
     elif attr == 'light_level':
-        value = int(request.form['value'])
-        alter_light_level(value)
+        alter_light_level(request.form['value'])
     elif attr == 'camera_state':
-        update_settings_cache('cam_state', val)
         value = request.form['value'] == 'true'
         if value:
             alter_cam_setting('light_wavelength', settings_cache['light_wavelength'])
         else:
             all_led_off()
+    elif attr in ['wifi_pwd','wifi_ssid']:
+        update_wifi_settings(attr, val)
     else:
-        update_settings_cache(attr, val)
+        pass
+    
+    update_settings_cache(attr, val)
+    #TODO last line shouldn't run if above it failed.
+
+        
 
 
 '''Shutdown Server Functions'''
@@ -114,7 +154,20 @@ def shutdown_server():
 def shut_server():
     all_led_off()
     shutdown_server()
-    return json.dumps({'status': 'Server shutting down...'})
+    return json.dumps({'status':'Server shutting down...'})
+
+
+'''Shutdown RPi Functions'''
+def shutdownPi():
+    from subprocess import call
+    call("sudo nohup shutdown -h now", shell=True)
+    return json.dumps({'status':'Server pi down...'})
+
+'''Shutdown RPi Route'''
+@app.route('/shutpi', methods=['POST'])
+def shutpi():
+    shutdownPi()
+    return json.dumps({'status':'Pi shutting down...'})
 
 
 '''Settings Allter Route'''
@@ -124,7 +177,7 @@ def alter_config():
     value = request.form['value']
     print('>attribute ', attribute, '| value ', value)
     alter_cam_setting(attribute, value)
-    return json.dumps({'status': 'OK'})
+    return json.dumps({'status':'OK'})
 
 
 '''Statistics Refresh Route'''
@@ -158,10 +211,14 @@ def video_feed(increment):
 '''Main Script'''
 if __name__ == '__main__':
     try:
-        # Turn Ready LED ON and Start Server
-        pipin.write(4, 1)
-        all_led_off()
-        app.run(host='0.0.0.0', port='8080', debug=False, threaded=True)
-    finally:
-        # Turn Ready LED OFF
+        # Turn Ready LED ON, Boot LED OFF, and Start Server
+        pipin.write(4, 1) # Ready
+        pipin.write(14, 0) # Boot
+        all_led_off() # IR LEDs
+        app.run(host='0.0.0.0', port='5000', debug=False, threaded=True)
+        #TODO PORT https://www.raspberrypi.org/forums/viewtopic.php?t=33708
+        # https://raspberrypi.stackexchange.com/questions/57777/making-a-raspberry-pi-3-accessible-w-o-configuration-via-wifi-and-static-ip-url
+    except:
+        # Turn Ready LEDs OFF - we are screwed.
         pipin.write(4, 0)
+        

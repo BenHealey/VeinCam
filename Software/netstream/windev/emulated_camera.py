@@ -1,13 +1,13 @@
 # Import Libraries
-import io
+import io, os, time
 import threading
-import time
 from _thread import get_ident
-
 import cv2
 import numpy as np
-import picamera
 
+from flask import Flask
+
+app = Flask(__name__)
 
 class CameraEvent:
     """The Event class which signals main script when a new camera frame is available"""
@@ -39,31 +39,32 @@ class CameraEvent:
 
 class StreamOutput:
     """Defines how the MJPEG stream writes to the buffer and splits each frame"""
-    def __init__(self):
-        self.frame = None
-        self.stream = io.BytesIO()
-
-    def write(self, buf):
-        if buf.startswith(b'\xff\xd8'):
-            self.stream.seek(0)
-            self.frame = self.stream.getvalue()
-            self.stream.truncate()
-            self.stream.seek(0)
-        return self.stream.write(buf)
+    pass
 
 
 class Camera:
     """Obtains image, stores camera settings and performs image processing"""
+
+    """An EMULATED camera implementation that streams a repeated sequence of
+    files 1.jpg, 2.jpg and 3.jpg at a rate of one frame per second."""
+
     def __init__(self, settings_cache):
         self.settings = settings_cache
+
+        # test images
+        self.imgs = [open(os.path.join(app.static_folder, 'images/testing/') + 'test_image' + suffix + '.jpeg', 'rb').read() 
+            for suffix in ['1', '2', '3', '4', '5']]
+        self.cvimgs = [cv2.imread(os.path.join(app.static_folder, 'images/testing/test_image') + suffix + '.jpeg', 0) 
+            for suffix in ['1', '2', '3', '4', '5']]
+
 
         # calculates crop and roi sizes
         self.res_height = 720
         self.res_width = 1280
-        self.crop = self.crop_size(600, 600, self.res_height, self.res_width)
+        self.crop = self.crop_size(600, 550, self.res_height, self.res_width)
         self.roi = np.zeros([2, 4])
-        self.roi[0] = self.crop_size(400, 400, 600, 600)
-        self.roi[1] = self.crop_size(250, 250, 600, 600)
+        self.roi[0] = self.crop_size(400, 300, 600, 550)
+        self.roi[1] = self.crop_size(250, 250, 600, 550)
         self.roi = self.roi.astype(int)
 
         # starts camera thread and initiates event class
@@ -81,12 +82,9 @@ class Camera:
         return np.array(crop_points)
 
     def update_settings(self):
-        print("Slf Sets UpDdtd - CamSate: %s" % self.settings["camera_state"])
-
+        print("self settings updated - camera_state: %s" % self.settings["camera_state"])
         try:
-            self.roi_setting = self.settings["roi"]
-            if int(self.pi_camera.contrast) != int(self.settings["cam_contrast"]):
-                self.pi_camera.contrast = int(self.settings["cam_contrast"])
+            self.roi_setting = self.settings["enhancement_roi"]
         except KeyError:
             print('No setting of that name currently in json file')
 
@@ -107,41 +105,16 @@ class Camera:
                     break
 
     def frames(self, img_format):
-        with picamera.PiCamera(resolution=(self.res_width, self.res_height)) as self.pi_camera:
+        # THIS CODE DOESN'T MATCH PROD CODE AT ALL
             time.sleep(1) 
-            self.pi_camera.rotation = 180
-            if img_format == "MJPEG":
-                output = StreamOutput()
-                self.pi_camera.start_recording(output, format='mjpeg')
-                try:
-                    while True:
-                        try:
-                            # if statements used to suppress initial OpenCV warnings
-                            if output.frame is not None:
-                                string_array = np.fromstring(output.frame, np.uint8)
-                            if np.shape(string_array)[0] > 0:
-                                if (self.settings["color"] == 'On') & (self.settings["img_format"] == 'MJPEG'):
-                                    img = cv2.imdecode(string_array, cv2.IMREAD_COLOR)
-                                else:
-                                    img = cv2.imdecode(string_array, cv2.IMREAD_GRAYSCALE)
-                            self.update_settings()
-                            self.image_processing(img)
-                            yield cv2.imencode('.jpg', self.img_final)[1].tobytes()
-                        except GeneratorExit:
-                            return
-                        except UnboundLocalError:
-                            pass
-                        except cv2.error:
-                            pass
-                finally:
-                    self.pi_camera.stop_recording()
-            elif img_format == "YUV":
-                raw_capture = np.empty(int(self.res_height * self.res_height * 1.5), dtype=np.uint8)
-                for frame in self.pi_camera.capture_continous(raw_capture, format="yuv"):
-                    img = raw_capture[:self.res_height*self.res_width].reshape((self.res_height, self.res_width))
-                    self.update_settings()
-                    self.image_processing(img)
-                    yield cv2.imencode('.jpg', self.img_final)[1].tobytes()
+
+            while True:
+                time.sleep(0.5)
+
+                img = self.cvimgs[int(time.time()) % 5]
+                self.update_settings()
+                self.image_processing(img)
+                yield cv2.imencode('.jpg', self.img_final)[1].tobytes()
 
     def image_processing(self, img):
         img = img[self.crop[0]:self.crop[1], self.crop[2]:self.crop[3]]
@@ -157,6 +130,7 @@ class Camera:
                           self.roi[roi_index][2]: self.roi[roi_index][3]]
 
             hist_eq = cv2.createCLAHE(clipLimit=6.0, tileGridSize=(6, 6))
+            
             if (self.settings["color"] == 'On') & (self.settings["img_format"] == 'MJPEG'):
                 lab = cv2.cvtColor(roi_img, cv2.COLOR_BGR2LAB)
                 lab_split = cv2.split(lab)
@@ -168,4 +142,3 @@ class Camera:
 
             self.img_final[self.roi[roi_index][0]: self.roi[roi_index][1],
                            self.roi[roi_index][2]: self.roi[roi_index][3]] = roi_img
-

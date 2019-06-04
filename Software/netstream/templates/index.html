@@ -27,100 +27,137 @@
       <header class="masthead mb-auto">
         <div class="navbar navbar-dark">
           <div class="container d-flex justify-content-between">
-          <!-- https://www.w3schools.com/bootstrap/bootstrap_grid_small.asp -->
             <div class="col-md-3 col-6"><span id="masthead-brand" class="masthead-brand">{{ config_data.app_name }}</span></div>
             <!-- Camera on/off rounded SWITCH -->
             <!-- http://www.jque.re/plugins/version3/bootstrap.switch/  https://github.com/Bttstrp/bootstrap-switch -->
-            <div class="col-md-3 col-6">
+            <div class="col-md-3 col-6"><!-- Cam State switch  -->
               <input type="checkbox" name="attrCamState" id="attrCamState">
             </div>
-            
-            <!-- Light levels https://codepen.io/johno/pen/LkaiI https://css-tricks.com/the-shapes-of-css/ -->
-            <div class="col-md-3 col-6">
-            <a href="#" 
-              onclick="alterConfig($('#attrLightLevel'),'light_level',parseInt($('#attrLightLevel').text())-1,updateTextValue);"
-              ><i class="fa fa-minus-square fa-lg"></i></a> 
-              <i class="fa fa-lightbulb text-muted"></i>
-              <strong id="attrLightLevel">{{ config_data.light_level|safe }}</strong><sup>/3</sup>
-            <a href="#" 
-              onclick="alterConfig($('#attrLightLevel'),'light_level',parseInt($('#attrLightLevel').text())+1,updateTextValue);"
-              ><i class="fa fa-plus-square fa-lg"></i></a>
+            <div class="col-md-3 col-6"><!-- Light levels  -->
+              <ul class="list-unstyled list-light">
+                  <li><i class="fa fa-lightbulb"></i>
+                    <div id="BG-LightLevel" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+                      <label class="btn {% if config_data.light_level == '1' %}btn-primary{% else %}btn-light{% endif %}" for="attrLightLevel-1">
+                        <input type="radio" name="attrLightLevel" id="attrLightLevel-1" autocomplete="off" {% if config_data.light_level == '1' %}checked{% endif %}>L
+                      </label>
+                      <label class="btn {% if config_data.light_level == '2' %}btn-primary{% else %}btn-light{% endif %}" for="attrLightLevel-2">
+                        <input type="radio" name="attrLightLevel" id="attrLightLevel-2" autocomplete="off" {% if config_data.light_level == '2' %}checked{% endif %}>M
+                      </label>
+                      <label class="btn {% if config_data.light_level == '3' %}btn-primary{% else %}btn-light{% endif %}" for="attrLightLevel-3">
+                        <input type="radio" name="attrLightLevel" id="attrLightLevel-3" autocomplete="off" {% if config_data.light_level == '3' %}checked{% endif %}>H
+                      </label>
+                    </div>
+                  </li>
+              </ul>
             </div>
-            <div class="col-md-3 col-6">
-            <!-- Config/Settings toggle -->                      
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarConfig" aria-controls="navbarConfig" aria-expanded="false" aria-label="Toggle navigation">
-              <i class="fa fa-cog fa-lg"></i>
-            </button>
+            <div class="col-md-3 col-6"><!-- Menu toggle (Bars Icon) -->
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarConfig" aria-controls="navbarConfig" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa fa-bars fa-lg"></i>
+              </button>
             </div>
           </div>
-
         </div>
 
         <div class="collapse" id="navbarConfig">
             <div class="container">
               <div class="row">
-                <div class="col-sm-6 col-md-6 py-4">
-                  <h4 class="text-white">App and Light Settings</h4>
-                  <ul class="list-unstyled">
-                    <li>
-                        <div>
-                          App name: 
-                          <input type="input" class="form-control form-control-sm d-inline col-3" 
-                            id="attrAppName" placeholder="{{ config_data.app_name }}">
-                          <button type="button" class="btn btn-sm btn-primary mb-1 d-inline" id="attrAppNameBtn"
-                            onclick="alterConfig($('#attrAppName'),'app_name',$('#attrAppName').val(),updateTitle);">Update</button>
-                        </div>
-                    </li>
-                  </ul>
-
-                  <ul class="list-unstyled">
-                      <li>Wavelength:
+                <div class="col-sm-6 col-md-6 pt-3">
+                  <h5 class="text-white">Light and App Settings</h5>
+                  <ul class="list-unstyled"><!-- LED Wavelength-->
+                      <li>LEDs (&lambda; nm):
                         <div  id="BG-Wavelength" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
                           <label class="btn {% if config_data.light_wavelength == '850nm' %}btn-primary{% else %}btn-light{% endif %}" for="attrWavelen-850nm">
-                            <input type="radio" name="attrWavelen" id="attrWavelen-850nm" autocomplete="off" {% if config_data.light_wavelength == '850nm' %}checked{% endif %}>850nm
+                            <input type="radio" name="attrWavelen" id="attrWavelen-850nm" autocomplete="off" {% if config_data.light_wavelength == '850nm' %}checked{% endif %}>850
                           </label>
                           <label class="btn {% if config_data.light_wavelength == 'Both' %}btn-primary{% else %}btn-light{% endif %}" for="attrWavelen-Both">
                             <input type="radio" name="attrWavelen" id="attrWavelen-Both" autocomplete="off" {% if config_data.light_wavelength == 'Both' %}checked{% endif %}>Both
                           </label>
                           <label class="btn {% if config_data.light_wavelength == '940nm' %}btn-primary{% else %}btn-light{% endif %}" for="attrWavelen-940nm">
-                            <input type="radio" name="attrWavelen" id="attrWavelen-940nm" autocomplete="off" {% if config_data.light_wavelength == '940nm' %}checked{% endif %}>940nm
+                            <input type="radio" name="attrWavelen" id="attrWavelen-940nm" autocomplete="off" {% if config_data.light_wavelength == '940nm' %}checked{% endif %}>940
                           </label>
                         </div>
                       </li>
                   </ul>
+                  <ul class="list-unstyled"><!-- App Name -->
+                    <li>
+                        <div class="usertext">
+                          App name: 
+                          <input type="input" class="form-control form-control-sm d-inline col-4" 
+                            id="attrAppName" value="{{ config_data.app_name }}">
+                          <button type="button" class="btn btn-sm btn-primary mb-1 d-inline" id="attrAppNameBtn"
+                            onclick="alterConfig($('#attrAppName'),'app_name',$('#attrAppName').val(),updateTitle);">Save</button>
+                        </div>
+                    </li>
+                  </ul>
+                  <ul class="list-unstyled"><!-- Wifi Name -->
+                    <li>
+                        <div class="usertext">
+                          Wifi name: 
+                          <input type="input" class="form-control form-control-sm d-inline col-4" 
+                            id="attrWifiSSID" value="{{ config_data.wifi_ssid }}">
+                          <button type="button" class="btn btn-sm btn-primary mb-1 d-inline" id="attrWifiSSIDBtn"
+                            onclick="alterConfig($('#attrWifiSSID'),'wifi_ssid',$('#attrWifiSSID').val(),updateInputValue);">Save</button>
+                        </div>
+                    </li>
+                  </ul>
+                  <ul class="list-unstyled"><!-- Wifi Pwd -->
+                    <li>
+                        <div class="usertext">
+                          &nbsp;&nbsp;Wifi pwd: 
+                          <input type="input" class="form-control form-control-sm d-inline col-4" 
+                            id="attrWifiPwd" value="{{ config_data.wifi_pwd }}">
+                          <button type="button" class="btn btn-sm btn-primary mb-1 d-inline" id="attrWifiPwdBtn"
+                            onclick="alterConfig($('#attrWifiPwd'),'wifi_pwd',$('#attrWifiPwd').val(),updateInputValue);">Save</button>
+                        </div>
+                    </li>
+                  </ul>
+                  <ul class="list-unstyled pt-3"><!--Shutdown Pi -->
+                      <li><button type="button" class="btn btn-sm btn-danger mb-1 d-inline" id="attrShutdownBtn"
+                          onclick="shutdownPi(); event.preventDefault();"><i class="fa fa-power-off fa-sm"></i> Shut down device</button>
+                      </li>
+                    </ul>
+                </div>
 
-                  <ul class="list-unstyled">
-                    <li>Enhance region:
+                <div class="col-sm-6 col-md-6 pt-3">
+                  <h5 class="text-white">Enhancement Region</h5>
+                  <ul class="list-unstyled"><!-- ROI Box Size  -->
+                    <li>Size:
                       <div id="BG-ROI" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-                        <label class="btn {% if config_data.roi == 'Off' %}btn-primary{% else %}btn-light{% endif %}" for="attrROI-Off">
-                          <input type="radio" name="attrROI" id="attrROI-Off" autocomplete="off" {% if config_data.roi == 'Off' %}checked{% endif %}><i class="fa fa-ban fa-lg"></i>
+                        <label class="btn {% if config_data.enhancement_roi == 'Off' %}btn-primary{% else %}btn-light{% endif %}" for="attrROI-Off">
+                          <input type="radio" name="attrROI" id="attrROI-Off" autocomplete="off" {% if config_data.enhancement_roi == 'Off' %}checked{% endif %}><i class="fa fa-ban fa-lg"></i>
                         </label>
-                        <label class="btn {% if config_data.roi == 'Small' %}btn-primary{% else %}btn-light{% endif %}" for="attrROI-Small">
-                          <input type="radio" name="attrROI" id="attrROI-Small" autocomplete="off" {% if config_data.roi == 'Small' %}checked{% endif %}>&nbsp;<i class="fa fa-expand fa-sm"></i>&nbsp;
+                        <label class="btn {% if config_data.enhancement_roi == 'Small' %}btn-primary{% else %}btn-light{% endif %}" for="attrROI-Small">
+                          <input type="radio" name="attrROI" id="attrROI-Small" autocomplete="off" {% if config_data.enhancement_roi == 'Small' %}checked{% endif %}>&nbsp;<i class="fa fa-expand fa-sm"></i>&nbsp;
                         </label>
-                        <label class="btn {% if config_data.roi == 'Large' %}btn-primary{% else %}btn-light{% endif %}" for="attrROI-Large">
-                          <input type="radio" name="attrROI" id="attrROI-Large" autocomplete="off" {% if config_data.roi == 'Large' %}checked{% endif %}><i class="fa fa-expand fa-lg"></i>
+                        <label class="btn {% if config_data.enhancement_roi == 'Large' %}btn-primary{% else %}btn-light{% endif %}" for="attrROI-Large">
+                          <input type="radio" name="attrROI" id="attrROI-Large" autocomplete="off" {% if config_data.enhancement_roi == 'Large' %}checked{% endif %}><i class="fa fa-expand fa-lg"></i>
                         </label>
                       </div>
                     </li>
-                </ul>
-
-                  <ul class="list-unstyled">
-                    <li class="text-muted">App version: 0.1</li>
                   </ul>
-                </div>
-
-                <div class="col-sm-6 col-md-6 py-4">
-                  <h4 class="text-white">Camera Settings</h4>
+                  <ul class="list-unstyled"><!-- ROI Method  -->
+                    <li>Method:
+                      <div id="BG-EQMethod" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+                        <label class="btn {% if config_data.enhancement_method == 'HE' %}btn-primary{% else %}btn-light{% endif %}" for="attrEQMethod-HE">
+                          <input type="radio" name="EQMethod-HE" id="attrEQMethod-HE" autocomplete="off" {% if config_data.enhancement_method == 'HE' %}checked{% endif %}>HE
+                        </label>
+                        <label class="btn {% if config_data.enhancement_method == 'CLAHE' %}btn-primary{% else %}btn-light{% endif %}" for="attrEQMethod-CLAHE">
+                          <input type="radio" name="EQMethod-CLAHE" id="attrEQMethod-CLAHE" autocomplete="off" {% if config_data.enhancement_method == 'CLAHE' %}checked{% endif %}>CLAHE
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
+                      
+                  <h5 class="text-white pt-3">Camera Settings</h5>
                   <ul class="list-unstyled">
                     <li class="mb-3"><span class="settings-table-left text-right">Contrast:</span>
                       <span class="settings-table-right text-right">
                           <a href="#" 
-                            onclick="alterConfig($('#attrContrast'),'cam_contrast',parseInt($('#attrContrast').text())-10,updateTextValue);"
+                            onclick="alterConfig($('#attrContrast'),'cam_contrast',parseInt($('#attrContrast').text())-10,updateTextValue); event.preventDefault();"
                             ><i class="fa fa-minus-square fa-lg"></i></a>
                             <strong id="attrContrast">0</strong><sup> / ±100</sup>
                           <a href="#" 
-                            onclick="alterConfig($('#attrContrast'),'cam_contrast',parseInt($('#attrContrast').text())+10,updateTextValue);"
+                            onclick="alterConfig($('#attrContrast'),'cam_contrast',parseInt($('#attrContrast').text())+10,updateTextValue); event.preventDefault();"
                             ><i class="fa fa-plus-square fa-lg"></i></a>
                       </span>
                     </li>
@@ -128,11 +165,11 @@
                     <li class="mb-3"><span class="settings-table-left text-right">Brightness:</span>
                       <span class="settings-table-right text-right">
                           <a href="#" 
-                            onclick="alterConfig($('#attrBrightness'),'cam_brightness',parseInt($('#attrBrightness').text())-10,updateTextValue);"
+                            onclick="alterConfig($('#attrBrightness'),'cam_brightness',parseInt($('#attrBrightness').text())-10,updateTextValue); event.preventDefault();"
                             ><i class="fa fa-minus-square fa-lg"></i></a>
                             <strong id="attrBrightness">50</strong><sup> / 100</sup>
                           <a href="#" 
-                            onclick="alterConfig($('#attrBrightness'),'cam_brightness',parseInt($('#attrBrightness').text())+10,updateTextValue);"
+                            onclick="alterConfig($('#attrBrightness'),'cam_brightness',parseInt($('#attrBrightness').text())+10,updateTextValue); event.preventDefault();"
                             ><i class="fa fa-plus-square fa-lg"></i></a>
                       </span>
                     </li>
@@ -140,42 +177,33 @@
                     <li class="mb-3"><span class="settings-table-left text-right">Shutterspeed:</span>
                       <span class="settings-table-right text-right">
                           <a href="#" 
-                            onclick="alterConfig($('#attrShutterSpeed'),'cam_shutspeed',parseInt($('#attrShutterSpeed').text())-1,updateTextValue);"
+                            onclick="alterConfig($('#attrShutterSpeed'),'cam_shutspeed',parseInt($('#attrShutterSpeed').text())-1,updateTextValue); event.preventDefault();"
                             ><i class="fa fa-minus-square fa-lg"></i></a>
                             <strong id="attrShutterSpeed">2</strong><sup> /100ths</sup>
                           <a href="#" 
-                            onclick="alterConfig($('#attrShutterSpeed'),'cam_shutspeed',parseInt($('#attrShutterSpeed').text())+1,updateTextValue);"
+                            onclick="alterConfig($('#attrShutterSpeed'),'cam_shutspeed',parseInt($('#attrShutterSpeed').text())+1,updateTextValue); event.preventDefault();"
                             ><i class="fa fa-plus-square fa-lg"></i></a>
                       </span>
                     </li>
-
-                </ul>
-                <ul class="list-unstyled">
-                      <li>Camera Capture Type:
-                        <div  id="BG-State" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-                          <label class="btn {% if config_data.state == 'MJPEG' %}btn-primary{% else %}btn-light{% endif %}" for="attrStatus-MJPEG">
-                            <input type="radio" name="status-MJPEG" id="attrStatus-MJPEG" autocomplete="off" {% if config_data.state == 'MJPEG' %}checked{% endif %}>MJPEG
-                          </label>
-                          <label class="btn {% if config_data.state == 'YUV' %}btn-primary{% else %}btn-light{% endif %}" for="attrStatus-YUV">
-                            <input type="radio" name="status-YUV" id="attrStatus-YUV" autocomplete="off" {% if config_data.state == 'YUV' %}checked{% endif %}>YUV
-                          </label>
-                        </div>
-                      </li>
-                  </ul>
-                  <ul class="list-unstyled">
-                      <li>MJPEG Colour Capture:
-                        <div  id="BG-Color" class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-                          <label class="btn {% if config_data.color == 'On' %}btn-primary{% else %}btn-light{% endif %}" for="attrColor-On">
-                            <input type="radio" name="color-On" id="attrColor-On" autocomplete="off" {% if config_data.color == 'On' %}checked{% endif %}>Colour
-                          </label>
-                          <label class="btn {% if config_data.color == 'Off' %}btn-primary{% else %}btn-light{% endif %}" for="attrColor-Off">
-                            <input type="radio" name="color-Off" id="attrColor-Off" autocomplete="off" {% if config_data.color == 'Off' %}checked{% endif %}>Black and White
-                          </label>
-                        </div>
-                      </li>
                   </ul>
                 </div>
               </div>
+
+              <div class="row"><!-- Version and CPU Stats  -->
+                <div class="col-sm-12 col-md-12 pb-2">
+                  <span class="small text-muted">
+                    Version: 1.0 |
+                    Temp: <span id="statCPUTemp">{{ stats_data.cpu_temp|safe }}</span>&#8451; | 
+                    CPU: <span id="statCPUUsage">{{ stats_data.cpu_usage|safe }}</span>% | 
+                    RAM: <span id="statRAMUsage">{{ stats_data.ram_usage|safe }}</span>%
+                  </br> 
+                    <a href="#" class="" onclick="refreshStats(); event.preventDefault();"><i class="fa fa-sync-alt fa-sm"></i> Refresh</a>
+                    <!--
+                    <a href="#" class="" onclick="shutdownServer(); event.preventDefault();"><i class="fa fa-stop-circle fa-sm"></i> Stop server</a>-->
+                  </span>
+                </div>
+              </div>
+
             </div>
         </div>
       </header>
@@ -183,21 +211,11 @@
       <main role="main" class="image">
         <div id="camState">
             <p>&nbsp;</p>
-            <!-- Camera off msg or the video stream will be dynamically placed below -->
+            <!-- Camera off msg or video stream will be dynamically placed below -->
             <p class="lead"></p>
         </div>
       </main>
 
-      <footer class="mastfoot mt-auto">
-        <div class="inner">
-          <p><a href="#" class="" onclick="shutdownPi(); return false;"><i class="fa fa-power-off fa-sm"></i> Shutdown</a> |
-            <a href="#" class="" onclick="shutdownServer(); return false;"><i class="fa fa-stop-circle fa-sm"></i> Stop</a> |
-            CPU Temp: <span id="statCPUTemp">{{ stats_data.cpu_temp|safe }}</span>&#8451; | 
-            CPU use: <span id="statCPUUsage">{{ stats_data.cpu_usage|safe }}</span>% | 
-            RAM use: <span id="statRAMUsage">{{ stats_data.ram_usage|safe }}</span>% | 
-            <a href="#" class="" onclick="refreshStats(); return false;"><i class="fa fa-sync-alt fa-sm"></i> Refresh</a></p>
-        </div>
-      </footer>
     </div>
 
     <!-- Bootstrap core *JavaScript*
@@ -215,6 +233,9 @@
       // AJAX call to server.
       function updateTextValue(object, attr, newVal){
         object.text(newVal);
+      }
+      function updateInputValue(object, attr, newVal){
+        object.val(newVal);
       }
       function updateTitle(object, attr, newVal){
         object.val(newVal);
@@ -286,7 +307,7 @@
           url: "/shutserver",
           data: {},
           type: "POST",
-          //datatype expected to get in reply form server
+          //datatype expected to get in reply from server
           dataType: "json",
           //on success, update the values at this end
           success: function(response, status, jqXHR){
@@ -307,7 +328,7 @@
           url: "/shutpi",
           data: {},
           type: "POST",
-          //datatype expected to get in reply form server
+          //datatype expected to get in reply from server
           dataType: "json",
           //on success, update the values at this end
           success: function(response, status, jqXHR){
@@ -321,8 +342,14 @@
       });
       } 
 
-      // Bulk-assign click event for the wavelength button group. UpdateBG kept as
-      // a separate function (above) as it should only run if the AJAX is successful.
+      // Bulk-assign click event for the button groups. UpdateBG kept as
+      // a separate function (above) as it should only run if AJAX call is successful.
+      $("#BG-LightLevel > .btn").bind('click', (function(){
+        console.log("Buttons currently disabled.");
+        event.preventDefault(); // Will get modified on cam state change, further below.
+      }));
+      $("#BG-LightLevel > label").addClass('disabled');
+
       $("#BG-Wavelength > .btn").click(function(){
         console.log( $(this).children("input")[0]["name"], $(this).children("input").attr('id').split("-").pop());
         alterConfig($(this), 
@@ -333,26 +360,19 @@
       $("#BG-ROI > .btn").click(function(){
         console.log( $(this).children("input")[0]["name"], $(this).children("input").attr('id').split("-").pop());
         alterConfig($(this),
-          'roi',
+          'enhancement_roi',
           $(this).children("input").attr('id').split("-").pop(),
           updateBG);
       });
-      $("#BG-Color > .btn").click(function(){
+      $("#BG-EQMethod > .btn").click(function(){
         console.log( $(this).children("input")[0]["name"], $(this).children("input").attr('id').split("-").pop());
         alterConfig($(this),
-          'color',
-          $(this).children("input").attr('id').split("-").pop(),
-          updateBG);
-      });
-      $("#BG-State > .btn").click(function(){
-        console.log( $(this).children("input")[0]["name"], $(this).children("input").attr('id').split("-").pop());
-        alterConfig($(this),
-          'state',
+          'enhancement_method',
           $(this).children("input").attr('id').split("-").pop(),
           updateBG);
       });
 
-      // TODO TODO Camera always initially off.  Function to handle UI changes and
+      // TODO Camera always initially off. Function to handle UI changes and
       // initiate change of state server-side 
       function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
@@ -369,12 +389,26 @@
           $incvar=$incvar+1;
           // console.log($incvar);
           $("#camState > p.lead").html('<img src="\{{ url_for('video_feed') }}/'+$incvar+'/\" height="90%" width="90%" >');
-          $(".mastfoot").css("bottom", "0px");
+          $("#BG-LightLevel > label").removeClass('disabled');
+          $("#BG-LightLevel > .btn").unbind('click');
+          $("#BG-LightLevel > .btn").click(function(){
+            console.log( $(this).children("input")[0]["name"], $(this).children("input").attr('id').split("-").pop());
+            alterConfig($(this), 
+            'light_level', 
+            $(this).children("input").attr('id').split("-").pop(), 
+            updateBG);
+          });
+
         } else { 
           alterConfig($("#attrCamState"), 'camera_state', turnOn, updateCamState);
           $("#camState > p.lead").empty();
           $("#camState > p.lead").html($cam_offtext);
-          $(".mastfoot").css("bottom", "0px");
+          $("#BG-LightLevel > label").addClass('disabled');
+          $("#BG-LightLevel > .btn").unbind('click');
+          $("#BG-LightLevel > .btn").bind('click', (function(){
+            console.log("Buttons currently disabled.");
+            event.preventDefault(); // Will get modified on cam state change, further below.
+          }));
         }
       }
 
@@ -382,16 +416,16 @@
         // Some initial values
         $incvar=0;
 
-        $cam_offtext="The camera is OFF.</br>Tap the switch above to turn it on.</br>";
+        $cam_offtext="The camera is OFF.</br>Tap the switch above to turn it on.</br>(The light buttons will also become available.)";
         $("#camState > p.lead").html($cam_offtext);
 
         // Set up key press on app name change input field to trigger change . 
-        $('#attrAppName').keyup(function (e) {
+        $('.usertext input:input').keyup(function (e) {
         var key = e.which;
         if(key == 13)  // the enter key code
           {
-            $('#attrAppNameBtn').click();
-            return false;  
+            $('#'+this.id+'Btn').click();
+            e.preventDefault(); 
           }
         });  
 

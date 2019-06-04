@@ -67,9 +67,8 @@ a:hover {
 /* Base structure  */
 html,
 body {
-  min-height: 100%;
+  min-height: 101%;
   background-color: #333;
-  margin-bottom: 10%; /* Margin bottom by footer height */
 }
 
 body {
@@ -91,7 +90,7 @@ body {
 .masthead-brand {
   font-family: 'Baloo';
   margin-bottom: 0;
-  font-size: 1.9rem;
+  font-size: 1.7rem;
 }
 
 .nav-masthead .nav-link {
@@ -108,7 +107,7 @@ body {
 }
 
 .nav-masthead .nav-link + .nav-link {
-  margin-left: 1rem;
+  margin-left: 0em;
 }
 
 .nav-masthead .active {
@@ -116,11 +115,15 @@ body {
   border-bottom-color: #fff;
 }
 
+.navbar-dark .list-light {
+  padding-top: .80rem;
+}
+
 .navbar, button.navbar-toggler {
   font-size: 1.4rem;
 }
 .navbar-dark .navbar-toggler {
-  padding: 0rem .75rem;
+  padding-top: 0.45rem;
   line-height: 1;
   color: #fff;
   background-color: transparent;
@@ -129,6 +132,7 @@ body {
 .navbar-dark .navbar-toggler:focus, .navbar-dark .navbar-toggler:active {
   outline: none;
 }
+
 
 .btn-primary:not(:disabled):not(.disabled).active,
 .btn-primary:not(:disabled):not(.disabled):active, 
@@ -154,23 +158,11 @@ body {
   margin-right: auto;
 }
 
-@media (min-width: 40em) {
+@media (min-width: 768px) {
   .masthead-brand {
     float: left;
   }
-  .nav-masthead {
+  .navbar-toggler {
     float: right;
   }
-}
-
-
-/* Footer */
-.mastfoot {
-  color: rgba(255, 255, 255, .5);
-  /* Below to make sticky */
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 10%; /* Set the fixed height of the footer here */
-  line-height: 20px; /* Vertically center the text there */
 }
