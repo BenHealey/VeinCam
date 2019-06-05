@@ -7,9 +7,9 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <link rel="shortcut icon" href="/Software/netstream/static/favicon.ico" type="image/x-icon">
-  <link rel="icon" type="image/png" href="/Software/netstream/static/images/icons/icon_192x192.png" sizes="192x192">
-  <link rel="apple-touch-icon" href="/Software/netstream/static/images/icons/icon_152x152.png">
+  <link rel="shortcut icon" href="./Software/netstream/static/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" href="./Software/netstream/static/images/icons/icon_192x192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="./Software/netstream/static/images/icons/icon_152x152.png">
 
   <title>VeinCam.Org - DIY vein visualisation for curious minds.</title>
 
@@ -21,76 +21,82 @@
   <link href="https://fonts.googleapis.com/css?family=Baloo|Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
   <!-- Custom styles for this template -->
-  <link href="/Software/netstream/static/css/style.css" rel="stylesheet">
-
+  <link href="./Software/netstream/static/css/style.css" rel="stylesheet">
 </head>
 
 <body>
-
-  <!-- Masthead -->
-  <div class="container">
-    <div class="row">
-      <div class="col-12 mx-auto">
-        <h8 class="mb-3">VeinCam</h8>
-        <h1 class="mb-5">The DIY vein visualisation kit for curious minds.</h1>
-      </div>
-      <div class="col-12 mx-auto">
-        <form>
-            <p class="lead mb-0">ENGN4221 Capstone Project</p>
-            <p class="lead mb-6"><a href="https://github.com/benhealey/veincam" class="btn btn-primary">GitHub &nbsp;<i class="fab fa-github"></i></button></a></p>
-        </form>
+<div class="cover-container d-flex w-100 h-100 mx-auto flex-column">
+    <!-- Masthead -->
+  <header class="masthead mb-auto">
+    <div class="container">
+      <div class="row col-12 mt-3">
+        <h8 class="mb-3 col-12 masthead-brand">VeinCam</h8>
+        <h1 class="mb-3 col-12">DIY vein visualisation for curious minds.</h1>
+        <p class="mb-5 col-12">View the full repository on <a href="https://github.com/benhealey/veincam" class="btn btn-primary">GitHub &nbsp;<i class="fab fa-github"></i></a></p>
       </div>
     </div>
-  </div>
+  </header>
 
   <!-- Icons Grid -->
+  <main role="main" class="text-left mb-auto">
     <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <div class="features-icons-item mx-auto mb-3 mb-lg-0 mb-lg-4">
-            <div class="features-icons-icon d-flex">
-              <i class="fa fa-clock m-auto text-primary"></i>
-            </div>
-            
-            <h3>Current Stage</h3>
-            <p class="lead mb-0">Finalising Team Review and Grade Application.</p>
-          </div>
+      <div class="row col-12 mt-3">
+        <div class="col-12 mb-5">
+            <h3>About</h3>
+            <p class="mb-3">VeinCam is an educational tool for vein visualisation. It uses near infrared (nIR) light and a nIR-sensitive camera to stream a real-time vein-enhanced video image. In addition to a custom PCB to control the nIR light source, the device employs widely available low-cost components from the <a href="https://www.raspberrypi.org/" target="_blank">Raspberry Pi educational foundation. <i class="fa fa-external-link-alt"></i></a></p>
+            <p>Much of VeinCam's development occurred during <a href="https://cs.anu.edu.au/TechLauncher/" target="_blank">ANU Engineering <i class="fa fa-external-link-alt"></i></a> capstone projects in 2018 and 2019. Created as an open-source project, anyone who may find VeinCam useful for learning can find the information necessary to make one in the associated <a href="https://github.com/benhealey/veincam">GitHub repository <i class="fa fa-external-link-alt"></i></a>. </p>
+            <p>Note that VeinCam is not a certified medical device and is therefore not intended for use in a clinical setting.</p>
+        </div>
+        <div class="col-12 mb-5">
+          <h3>Repository structure</h3>
+          <p class="mb-0">The <a href="https://github.com/benhealey/veincam">VeinCam GitHub repository <i class="fa fa-external-link-alt"></i></a> contains schematics and code for both the hardware and software components of the device. The folders for each component contain 'readme' files outlining their contents and key aspects of functionality.</p>
+        </div>
+        <div class="col-12 mb-5">
+          <h3>Get the hardware kit</h3>
+          <p class="mb-2">Finalising Team Review and Grade Application.</p>
+          <p class="mb-5"><a href="https://veincam.com" target="_blank" class="btn btn-primary">Hardware Kit &nbsp;<i class="fas fa-shopping-basket"></i></a></p>
         </div>
       </div>
     </div>
-
+  </main>
 
   <!-- Footer -->
-  <footer class="footer bg-light">
+  <footer class="footer">
     <div class="container">
-      <div class="row">
-        <div class="col-12 h-100 text-center text-lg-left my-auto">
+      <div class="row  text-center text-muted small">
+        <div class="col-12">
           <ul class="list-inline mb-2">
-            <li class="list-inline-item">&sdot;</li>
             <li class="list-inline-item">
-              <a href="malito:ben@veincam.org">Contact</a>
+              <a tabindex="0" href="" class="poplink text-muted" data-trigger="focus" data-container="body" data-toggle="popover" data-placement="top" data-content="Hi! You can send an email to ben at veincam.org to get in touch.">Contact</a>
             </li>
             <li class="list-inline-item">&sdot;</li>
             <li class="list-inline-item">
-              <a href="https://creativecommons.org.au/learn/licences/">License</a>
+              <a href="https://creativecommons.org.au/learn/licences/"  class="text-muted">License</a>
             </li>
             <li class="list-inline-item">&sdot;</li>
             <li class="list-inline-item">
-              <a href="veincam.org">Previous VeinCam Repositories</a>
+              VeinCam ANU project repositories - <a href="https://github.com/chrisbodger/VeinCam" class="text-muted">2018</a>, <a href="https://github.com/chrisbodger/veincam2019" class="text-muted">2019</a>
             </li>
           </ul>
-          <p class="text-muted small mb-4 mb-lg-0">&copy; VeinCam Project 2019. All Rights Reserved.</p>
+          <p class="mb-4 mb-lg-0">&copy; VeinCam 2019. All Rights Reserved.</p>
         </div>
       </div>
     </div>
   </footer>
 
+  </div>
 
     <!-- Bootstrap core *JavaScript*
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" ></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script>
+      $(function () {
+          $('[data-toggle="popover"]').popover()
+          $('a.poplink').click(function(e) {e.preventDefault();})
+      })
+    </script>
 
 </body>
 
