@@ -60,10 +60,10 @@ class Camera:
         # calculates crop and roi sizes
         self.res_height = 720
         self.res_width = 1280
-        self.crop = self.crop_size(600, 600, self.res_height, self.res_width)
+        self.crop = self.crop_size(700, 450, self.res_height, self.res_width)
         self.roi = np.zeros([2, 4])
-        self.roi[0] = self.crop_size(400, 400, 600, 600)
-        self.roi[1] = self.crop_size(250, 250, 600, 600)
+        self.roi[0] = self.crop_size(400, 250, 700, 450)
+        self.roi[1] = self.crop_size(300, 200, 700, 450)
         self.roi = self.roi.astype(int)
 
         # starts camera thread and initiates event class
@@ -81,10 +81,10 @@ class Camera:
         return np.array(crop_points)
 
     def update_settings(self):
-        print("Slf Sets UpDdtd - CamSate: %s" % self.settings["camera_state"])
+        print("Slf Sets UpDdtd - camera_state: %s" % self.settings["camera_state"])
 
         try:
-            self.roi_setting = self.settings["roi"]
+            self.roi_setting = self.settings["enhancement_roi"]
             if int(self.pi_camera.contrast) != int(self.settings["cam_contrast"]):
                 self.pi_camera.contrast = int(self.settings["cam_contrast"])
         except KeyError:
@@ -156,15 +156,11 @@ class Camera:
             roi_img = img[self.roi[roi_index][0]: self.roi[roi_index][1],
                           self.roi[roi_index][2]: self.roi[roi_index][3]]
 
-            hist_eq = cv2.createCLAHE(clipLimit=6.0, tileGridSize=(6, 6))
-            if (self.settings["color"] == 'On') & (self.settings["img_format"] == 'MJPEG'):
-                lab = cv2.cvtColor(roi_img, cv2.COLOR_BGR2LAB)
-                lab_split = cv2.split(lab)
-                lab_split[0] = hist_eq.apply(lab_split[0])
-                lab = cv2.merge(lab_split)
-                roi_img = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
-            else:
+            if self.settings["enhancement_method"] == "CLAHE":
+                hist_eq = cv2.createCLAHE(clipLimit=6.0, tileGridSize=(6, 6))
                 roi_img = hist_eq.apply(roi_img)
+            else:
+                roi_img = cv2.equalizeHist(roi_img)
 
             self.img_final[self.roi[roi_index][0]: self.roi[roi_index][1],
                            self.roi[roi_index][2]: self.roi[roi_index][3]] = roi_img

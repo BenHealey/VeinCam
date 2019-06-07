@@ -9,7 +9,7 @@
     "camera_state": "false",
     "color": "Off",
     "enhancement_method": "HE",
-    "enhancement_roi": "Small",
+    "enhancement_roi": "Off",
     "img_format": "MJPEG",
     "light_level": "1",
     "light_wavelength": "850nm",
