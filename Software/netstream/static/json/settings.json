@@ -9,9 +9,9 @@
     "camera_state": "false",
     "color": "Off",
     "enhancement_method": "HE",
-    "enhancement_roi": "Off",
+    "enhancement_roi": "Large",
     "img_format": "MJPEG",
-    "light_level": "1",
+    "light_level": "3",
     "light_wavelength": "850nm",
     "wifi_pwd": "12345",
     "wifi_ssid": "IndieVein"

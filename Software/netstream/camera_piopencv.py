@@ -81,7 +81,7 @@ class Camera:
         return np.array(crop_points)
 
     def update_settings(self):
-        print("Slf Sets UpDdtd - camera_state: %s" % self.settings["camera_state"])
+        #print("Slf Sets UpDdtd - camera_state: %s" % self.settings["camera_state"])
 
         try:
             self.roi_setting = self.settings["enhancement_roi"]
@@ -164,4 +164,4 @@ class Camera:
 
             self.img_final[self.roi[roi_index][0]: self.roi[roi_index][1],
                            self.roi[roi_index][2]: self.roi[roi_index][3]] = roi_img
-
+                           

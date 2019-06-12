@@ -109,7 +109,7 @@ def alter_light_level(val):
     if intval in (1, 2, 3):
         duty_cycle = 333333*intval  # Max = 1000000
         activeLEDs = LEDPinMap[settings_cache['light_wavelength']].intersection(LEDPinMap["Rail5V"])
-        [pipin.hardware_PWM(pin, 750, duty_cycle) for pin in activeLEDs]
+        [pipin.hardware_PWM(pin, 2000, duty_cycle) for pin in activeLEDs] #2000hz
 
         if val != settings_cache['light_level']:
             update_settings_cache('light_level', val)

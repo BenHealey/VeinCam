@@ -82,7 +82,7 @@ class Camera:
         return np.array(crop_points)
 
     def update_settings(self):
-        print("Slf Sets UpDdtd - camera_state: %s" % self.settings["camera_state"])
+        #print("Slf Sets UpDdtd - camera_state: %s" % self.settings["camera_state"])
         try:
             self.roi_setting = self.settings["enhancement_roi"]
         except KeyError:
@@ -129,9 +129,11 @@ class Camera:
             roi_img = img[self.roi[roi_index][0]: self.roi[roi_index][1],
                           self.roi[roi_index][2]: self.roi[roi_index][3]]
             if self.settings["enhancement_method"] == "CLAHE":
-                hist_eq = cv2.createCLAHE(clipLimit=6.0, tileGridSize=(6, 6))
+                hist_eq = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(6, 6))
                 roi_img = hist_eq.apply(roi_img)
+                roi_img = cv2.bilateralFilter(roi_img,5,10,10)
             else:
+                roi_img = cv2.bilateralFilter(roi_img,5,10,10)
                 roi_img = cv2.equalizeHist(roi_img)
             
             """ Deprecated
