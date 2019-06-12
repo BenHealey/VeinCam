@@ -155,9 +155,12 @@ class Camera:
         if self.roi_setting in ("Large", "Small"):
             roi_img = img[self.roi[roi_index][0]: self.roi[roi_index][1],
                           self.roi[roi_index][2]: self.roi[roi_index][3]]
+            CCLIP = float(self.settings["CL_Clip"]+".0")
+            CCA = int(self.settings["CL_A"])
+            CCB = int(self.settings["CL_B"])
 
             if self.settings["enhancement_method"] == "CLAHE":
-                hist_eq = cv2.createCLAHE(clipLimit=6.0, tileGridSize=(6, 6))
+                hist_eq = cv2.createCLAHE(clipLimit=CCLIP, tileGridSize=(CCA, CCA))
                 roi_img = hist_eq.apply(roi_img)
             else:
                 roi_img = cv2.equalizeHist(roi_img)

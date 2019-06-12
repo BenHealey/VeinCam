@@ -155,33 +155,45 @@
                           <a href="#" 
                             onclick="alterConfig($('#attrContrast'),'cam_contrast',parseInt($('#attrContrast').text())-10,updateTextValue); event.preventDefault();"
                             ><i class="fa fa-minus-square fa-lg"></i></a>
-                            <strong id="attrContrast">0</strong><sup> / ±100</sup>
+                            <strong id="attrContrast">{{ config_data.cam_contrast|safe }}</strong><sup> / ±100</sup>
                           <a href="#" 
                             onclick="alterConfig($('#attrContrast'),'cam_contrast',parseInt($('#attrContrast').text())+10,updateTextValue); event.preventDefault();"
                             ><i class="fa fa-plus-square fa-lg"></i></a>
                       </span>
                     </li>
 
-                    <li class="mb-3"><span class="settings-table-left text-right">Brightness:</span>
+                    <li class="mb-3"><span class="settings-table-left text-right">CLH_C:</span>
                       <span class="settings-table-right text-right">
                           <a href="#" 
-                            onclick="alterConfig($('#attrBrightness'),'cam_brightness',parseInt($('#attrBrightness').text())-10,updateTextValue); event.preventDefault();"
+                            onclick="alterConfig($('#attrCLH_C'),'CL_Clip',parseInt($('#attrCLH_C').text())-1,updateTextValue); event.preventDefault();"
                             ><i class="fa fa-minus-square fa-lg"></i></a>
-                            <strong id="attrBrightness">50</strong><sup> / 100</sup>
+                            <strong id="attrCLH_C">{{ config_data.CL_Clip|safe }}</strong>
                           <a href="#" 
-                            onclick="alterConfig($('#attrBrightness'),'cam_brightness',parseInt($('#attrBrightness').text())+10,updateTextValue); event.preventDefault();"
+                            onclick="alterConfig($('#attrCLH_C'),'CL_Clip',parseInt($('#attrCLH_C').text())+1,updateTextValue); event.preventDefault();"
                             ><i class="fa fa-plus-square fa-lg"></i></a>
                       </span>
                     </li>
 
-                    <li class="mb-3"><span class="settings-table-left text-right">Shutterspeed:</span>
+                    <li class="mb-3"><span class="settings-table-left text-right">CLH_A:</span>
                       <span class="settings-table-right text-right">
                           <a href="#" 
-                            onclick="alterConfig($('#attrShutterSpeed'),'cam_shutspeed',parseInt($('#attrShutterSpeed').text())-1,updateTextValue); event.preventDefault();"
+                            onclick="alterConfig($('#attrCLH_A'),'CL_A',parseInt($('#attrCLH_A').text())-1,updateTextValue); event.preventDefault();"
                             ><i class="fa fa-minus-square fa-lg"></i></a>
-                            <strong id="attrShutterSpeed">2</strong><sup> /100ths</sup>
+                            <strong id="attrCLH_A">{{ config_data.CL_A|safe }}</strong>
                           <a href="#" 
-                            onclick="alterConfig($('#attrShutterSpeed'),'cam_shutspeed',parseInt($('#attrShutterSpeed').text())+1,updateTextValue); event.preventDefault();"
+                            onclick="alterConfig($('#attrCLH_A'),'CL_A',parseInt($('#attrCLH_A').text())+1,updateTextValue); event.preventDefault();"
+                            ><i class="fa fa-plus-square fa-lg"></i></a>
+                      </span>
+                    </li>
+
+                    <li class="mb-3"><span class="settings-table-left text-right">CLH_B:</span>
+                      <span class="settings-table-right text-right">
+                          <a href="#" 
+                            onclick="alterConfig($('#attrCLH_B'),'CL_B',parseInt($('#attrCLH_B').text())-1,updateTextValue); event.preventDefault();"
+                            ><i class="fa fa-minus-square fa-lg"></i></a>
+                            <strong id="attrCLH_B">{{ config_data.CL_A|safe }}</strong>
+                          <a href="#" 
+                            onclick="alterConfig($('#attrCLH_B'),'CL_B',parseInt($('#attrCLH_B').text())+1,updateTextValue); event.preventDefault();"
                             ><i class="fa fa-plus-square fa-lg"></i></a>
                       </span>
                     </li>

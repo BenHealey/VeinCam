@@ -1,4 +1,7 @@
 {
+    "CL_A": "3",
+    "CL_B": "6",
+    "CL_Clip": "5",
     "app_name": "MyCam",
     "cam_brightness": "50",
     "cam_contrast": "0",
@@ -8,8 +11,8 @@
     "cam_state": "false",
     "camera_state": "false",
     "color": "Off",
-    "enhancement_method": "HE",
-    "enhancement_roi": "Large",
+    "enhancement_method": "CLAHE",
+    "enhancement_roi": "Small",
     "img_format": "MJPEG",
     "light_level": "3",
     "light_wavelength": "850nm",
