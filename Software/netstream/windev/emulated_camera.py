@@ -67,6 +67,13 @@ class Camera:
         self.roi[1] = self.crop_size(300, 200, 700, 450)
         self.roi = self.roi.astype(int)
 
+        self.CLAHESet = np.zeros([2, 3])
+        #Large settings - clip, horizontal, vertical.
+        self.CLAHESet[0] = [5,6,6] #Large
+        #Small settings - clip, horizontal, vertical.
+        self.CLAHESet[1] = [10,6,8] #Large
+        self.CLAHESet = self.CLAHESet.astype(int)
+
         # starts camera thread and initiates event class
         self.thread = threading.Thread(target=self._thread)
         self.thread.start()
@@ -127,14 +134,14 @@ class Camera:
 
         if self.roi_setting in ("Large", "Small"):
             roi_img = img[self.roi[roi_index][0]: self.roi[roi_index][1], self.roi[roi_index][2]: self.roi[roi_index][3]]
-            CCLIP = float(self.settings["CL_Clip"]+".0")
-            CCA = int(self.settings["CL_A"])
-            CCB = int(self.settings["CL_B"])
 
             if self.settings["enhancement_method"] == "CLAHE":
-                hist_eq = cv2.createCLAHE(clipLimit=CCLIP, tileGridSize=(CCA, CCA))
+                hist_eq = cv2.createCLAHE(
+                    clipLimit=self.CLAHESet[roi_index][0], 
+                    tileGridSize=(self.CLAHESet[roi_index][1],
+                     self.CLAHESet[roi_index][2])
+                    )
                 roi_img = hist_eq.apply(roi_img)
-                roi_img = cv2.bilateralFilter(roi_img,5,10,10)
             else:
                 roi_img = cv2.bilateralFilter(roi_img,5,10,10)
                 roi_img = cv2.equalizeHist(roi_img)
