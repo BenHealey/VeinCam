@@ -79,6 +79,14 @@ body {
   margin: 0 0 100px;
 }
 
+.modal {
+  color: black;
+  text-align: left;
+}
+.modal-header{
+  font-weight: bold;
+}
+
 .cover-container {
   color: inherit;
 }

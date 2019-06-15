@@ -48,4 +48,4 @@ fi
 
 # Start vein vis app
 cd /home/pi/netstream
-python3 app.py
+sudo python3 app.py

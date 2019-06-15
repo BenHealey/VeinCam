@@ -25,10 +25,10 @@ app = Flask(__name__)
 
 '''Settings and Statistics Dictionary Functions'''
 # Creates map to wifi setup file
-wifi_file = os.path.join('etc','hostapd','hostapd.conf')
+wifi_file = os.path.join('/etc','hostapd','hostapd.conf')
 
 if DEBUG: #TODO delete from production
-    wifi_file = os.path.join(app.root_path, 'hostapd.conf')
+    wifi_file = os.path.normpath(os.path.join(os.getcwd(), '..','hostapd.conf'))
 
 
 # Creates Setting Cache
@@ -110,7 +110,7 @@ def alter_light_level(val):
         duty_cycle = [400000,650000,1000000][intval-1]  # Max = 1000000
         frequency = [1600,1300,500][intval-1]
         activeLEDs = LEDPinMap[settings_cache['light_wavelength']].intersection(LEDPinMap["Rail5V"])
-        [pipin.hardware_PWM(pin, frequency, duty_cycle) for pin in activeLEDs] #500hz
+        [pipin.hardware_PWM(pin, frequency, duty_cycle) for pin in activeLEDs]
 
         if val != settings_cache['light_level']:
             update_settings_cache('light_level', val)

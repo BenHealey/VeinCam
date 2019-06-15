@@ -95,8 +95,7 @@
                           Wifi name: 
                           <input type="input" class="form-control form-control-sm d-inline col-4" 
                             id="attrWifiSSID" value="{{ config_data.wifi_ssid }}">
-                          <button type="button" class="btn btn-sm btn-primary mb-1 d-inline" id="attrWifiSSIDBtn"
-                            onclick="alterConfig($('#attrWifiSSID'),'wifi_ssid',$('#attrWifiSSID').val(),updateInputValue);">Save</button>
+                          <button type="button" class="btn btn-sm btn-primary mb-1 d-inline" id="attrWifiSSIDBtn" onclick="alterConfig($('#attrWifiSSID'),'wifi_ssid',$('#attrWifiSSID').val(),updateInputValue);">Save</button>
                         </div>
                     </li>
                   </ul>
@@ -106,8 +105,7 @@
                           &nbsp;&nbsp;Wifi pwd: 
                           <input type="input" class="form-control form-control-sm d-inline col-4" 
                             id="attrWifiPwd" value="{{ config_data.wifi_pwd }}">
-                          <button type="button" class="btn btn-sm btn-primary mb-1 d-inline" id="attrWifiPwdBtn"
-                            onclick="alterConfig($('#attrWifiPwd'),'wifi_pwd',$('#attrWifiPwd').val(),updateInputValue);">Save</button>
+                          <button type="button" class="btn btn-sm btn-primary mb-1 d-inline btn-confirm" id="attrWifiPwdBtn">Save</button>
                         </div>
                     </li>
                   </ul>
@@ -192,6 +190,25 @@
         </div>
       </main>
 
+
+      <div class="modal fade" id="mo-confirm-change" tabindex="-1" role="dialog" aria-labelledby="modalWifiChangeLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Whoa there!
+                </div>
+                <div class="modal-body">
+                    If you forget this new password you won't be able to connect to your VeinCam next time you boot it up.
+                </div>
+              
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="modal-btn-cancel" aria-label="Cancel">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="modal-btn-doit">Change It!</button>
+                </div>
+            </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- Bootstrap core *JavaScript*
@@ -227,7 +244,32 @@
         return; // Do nothing. Handled elsewhere.
       }
 
-      // AJAX function for actioning user-initiated change
+
+      var modalConfirmWifi = function(callback){
+        $(".btn-confirm").on("click", function(){
+          $("#mo-confirm-change").modal('show');
+        });
+
+        $("#modal-btn-doit").on("click", function(){
+          callback(true);
+          $("#mo-confirm-change").modal('hide');
+        });
+
+        $("#modal-btn-cancel").on("click", function(){
+          callback(false);
+          $("#mo-confirm-change").modal('hide');
+        });
+      };
+
+      modalConfirmWifi(function(confirm){
+        if(confirm){
+          alterConfig($('#attrWifiPwd'),'wifi_pwd',$('#attrWifiPwd').val(),updateInputValue);
+        }else{
+          return false;
+        }
+      });
+
+     // AJAX function for actioning user-initiated change
       // to configuration (and storing value statically server-side). 
       function alterConfig(object, attr, newVal, updateFunc){
       //console.log({attribute : attr, value : newVal});  
