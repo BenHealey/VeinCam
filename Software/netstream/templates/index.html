@@ -108,6 +108,7 @@
                           <button type="button" class="btn btn-sm btn-primary mb-1 d-inline btn-confirm" id="attrWifiPwdBtn">Save</button>
                         </div>
                     </li>
+                    <li class="small text-warning">Wifi name and password should have 7+ characters/numbers, or things may break.</li>
                   </ul>
                   <ul class="list-unstyled pt-3"><!--Shutdown Pi -->
                       <li><button type="button" class="btn btn-sm btn-danger mb-1 d-inline" id="attrShutdownBtn"
@@ -173,7 +174,7 @@
                     RAM: <span id="statRAMUsage">{{ stats_data.ram_usage|safe }}</span>%
                   </br> 
                     <a href="#" class="" onclick="refreshStats(); event.preventDefault();"><i class="fa fa-sync-alt fa-sm"></i> Refresh</a>
-                    <a href="#" class="" onclick="shutdownServer(); event.preventDefault();"><i class="fa fa-stop-circle fa-sm"></i> Stop server</a>
+                    <!--<a href="#" class="" onclick="shutdownServer(); event.preventDefault();"><i class="fa fa-stop-circle fa-sm"></i> Stop server</a>-->
                   </span>
                 </div>
               </div>

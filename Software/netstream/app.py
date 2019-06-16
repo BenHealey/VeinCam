@@ -26,10 +26,8 @@ app = Flask(__name__)
 '''Settings and Statistics Dictionary Functions'''
 # Creates map to wifi setup file
 wifi_file = os.path.join('/etc','hostapd','hostapd.conf')
-
-if DEBUG: #TODO delete from production
+if DEBUG:
     wifi_file = os.path.normpath(os.path.join(os.getcwd(), '..','hostapd.conf'))
-
 
 # Creates Setting Cache
 settings_file = os.path.join(app.static_folder, 'json', 'settings.json')
@@ -66,19 +64,22 @@ def update_system_stats():
 
 def update_wifi_settings(attr,val):
     print("updating wifi")
+    print(wifi_file)
     with open(wifi_file,'r') as f:
             in_file = f.read()
             f.close()
 
     if attr == 'wifi_pwd':
-        out_file =  re.sub(r'wpa_passphrase=.*','wpa_passphrase='+val, in_file)
+        out_file =  re.sub(r'^wpa_passphrase=.*$','wpa_passphrase='+val, in_file, count=1, flags=re.M)
 
     if attr == 'wifi_ssid':
-        out_file =  re.sub(r'ssid=.*','ssid='+val,in_file)
+        out_file =  re.sub(r'^ssid=.*$','ssid='+val,in_file, count=1, flags=re.M)
 
     with open(wifi_file,'w') as f:
             f.write(out_file)
             f.close()
+    
+    os.chmod(wifi_file,755)
 
 '''Global Render Template'''
 @app.route('/')
@@ -216,7 +217,7 @@ if __name__ == '__main__':
         pipin.write(4, 1) # Ready
         pipin.write(14, 0) # Boot
         all_led_off() # IR LEDs
-        app.run(host='0.0.0.0', port='5000', debug=False, threaded=True)
+        app.run(host='0.0.0.0', port='5000', debug=DEBUG, threaded=True)
         #TODO PORT https://www.raspberrypi.org/forums/viewtopic.php?t=33708
         # https://raspberrypi.stackexchange.com/questions/57777/making-a-raspberry-pi-3-accessible-w-o-configuration-via-wifi-and-static-ip-url
     except:
