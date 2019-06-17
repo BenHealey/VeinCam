@@ -20,7 +20,7 @@ The repository is broadly split into Hardware and Software sections.
 
 Each section contains schematics or code for the components of the device. The root folders for each section contain *readme* files outlining their contents and key aspects of functionality. The *assembly* instructions in each folder outline at a high level how to get the device working.
 
-Please note that while the software licence is GPL3.0, the hardare specifications are intended to be available for personal non-commercial use one. Only the developers may create commercial versions of the VeinCam hardware for sale to others.
+Please note that while the software licence is GPL3.0, the hardware specifications are intended to be available for personal non-commercial use one. Only the developers may create commercial versions of the VeinCam hardware for sale to others.
 
 ### 3. Hardware Kit
 Many people will not have access to the equipment required to make the hardware components of the device, so we are in the process of finalising a low-cost kit you can purchase. (due end of 2019)
