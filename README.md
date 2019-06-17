@@ -1,5 +1,5 @@
 
-#VeinCam
+# VeinCam
 
 VeinCam is an educational tool for vein visualisation. It uses near infrared (nIR) light and a nIR-sensitive camera to stream a real-time vein-enhanced video image to a user's phone or tablet. In addition to a custom PCB to control the nIR light source, the device employs widely available low-cost components from the [Raspberry Pi educational foundation](https://www.raspberrypi.org/).
 
